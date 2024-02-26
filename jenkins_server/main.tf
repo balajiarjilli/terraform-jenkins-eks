@@ -5,10 +5,10 @@ module "vpc" {
   name = "jenkins-vpc"
   cidr = "10.0.0.0/16"
 
-  azs            = data.aws_availability_zones.azs.names
-  public_subnets = var.public_subnets
+  azs                     = data.aws_availability_zones.azs.names
+  public_subnets          = var.public_subnets
   map_public_ip_on_launch = true
-  enable_dns_hostnames = true
+  enable_dns_hostnames    = true
 
   tags = {
     name        = "jenkins-vpc"

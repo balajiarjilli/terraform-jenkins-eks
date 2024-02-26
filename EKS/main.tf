@@ -3,14 +3,14 @@ module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
   name = "jenkins-vpc"
-  cidr = "10.0.0.0/16"
+  cidr = var.vpc_cidr
 
-  azs            = data.aws_availability_zones.azs.names
-  private_subnets = var.private_subnets
-  public_subnets = var.public_subnets
+  azs                  = data.aws_availability_zones.azs.names
+  private_subnets      = var.private_subnets
+  public_subnets       = var.public_subnets
   enable_dns_hostnames = true
-  enable_nat_gateway = true
-  single_nat_gateway = true
+  enable_nat_gateway   = true
+  single_nat_gateway   = true
 
   tags = {
     "kubernetes.io/cluster/my-eks-cluster" = "shared"
@@ -18,11 +18,11 @@ module "vpc" {
 
   public_subnet_tags = {
     "kubernetes.io/cluster/my-eks-cluster" = "shared"
-    "kubernetes.io/role/elb"=1
+    "kubernetes.io/role/elb"               = 1
   }
   private_subnet_tags = {
     "kubernetes.io/cluster/my-eks-cluster" = "shared"
-    "kubernetes.io/role/internal-elb"=1
+    "kubernetes.io/role/internal-elb"      = 1
   }
 }
 
@@ -38,11 +38,11 @@ module "eks" {
   cluster_name    = "my-eks-cluster"
   cluster_version = "1.24"
 
-  cluster_endpoint_public_access  = true
+  cluster_endpoint_public_access = true
 
 
-  vpc_id                   = module.vpc.vpc_id
-  subnet_ids               = module.vpc.private_subnets
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.private_subnets
   #control_plane_subnet_ids = ["subnet-xyzde987", "subnet-slkjf456", "subnet-qeiru789"]
 
 
@@ -57,7 +57,7 @@ module "eks" {
     }
   }
 
- 
+
   tags = {
     Environment = "dev"
     Terraform   = "true"
